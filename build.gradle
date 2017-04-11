@@ -11,6 +11,11 @@ buildscript {
     }
 }
 
+def pomConfig = {
+    name 'perc-spring-social-facebook'
+    url 'https://github.com/Percussion-Software/spring-social-facebook'
+}
+
 // Set up different subproject lists for individual configuration
 ext.javaProjects = subprojects.findAll { project -> project.name != 'docs' && project.name != 'manual' }
 ext.docProjects = subprojects.findAll { project -> project.name == 'docs' || project.name == 'manual' }
@@ -21,7 +26,7 @@ configure(allprojects - docProjects) {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply plugin: 'javadocHotfix'
-    apply plugin: "maven"
+    apply plugin: 'maven'
 
     group = 'org.springframework.social'
 
@@ -82,12 +87,32 @@ configure(allprojects - docProjects) {
 configure(subprojects - docProjects) { subproject ->
     apply from: "${rootProject.projectDir}/publish-maven.gradle"
 
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://repo-man.stage.crescendocontent.services:8081/nexus/content/groups/public"
+        }
+    }
+
+    group = 'com.percussion'
+    archivesBaseName = 'perc-spring-social-facebook'
+    version = '1.0.0-SNAPSHOT'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: "http://repo-man.stage.crescendocontent.services:8081/nexus/content/repositories/snapshots") {
+                    authentication(userName: "admin", password: "bfHP3Wgq")
+                }
+                pom.version = "1.0.0-SNAPSHOT"
+                pom.artifactId = "perc-spring-social-facebook"
+                pom.groupId = "com.percussion"
+            }
+        }
+    }
+
     if (project.hasProperty('platformVersion')) {
         apply plugin: 'spring-io'
-
-        repositories {
-            maven { url "https://repo.spring.io/libs-snapshot" }
-        }
 
         dependencyManagement {
             springIoTestRuntime {
@@ -193,6 +218,29 @@ project('spring-social-facebook') {
         compile ("javax.servlet:javax.servlet-api:$servletApiVersion", provided)
         testCompile ("org.springframework:spring-test:$springVersion")
     }
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://aiur.zeal.technology:8081/nexus/content/groups/public"
+        }
+    }
+
+    group = 'com.percussion'
+    archivesBaseName = 'perc-spring-social-facebook'
+    version = '1.0.0-SNAPSHOT'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: "http://repo-man.stage.crescendocontent.services:8081/nexus/content/repositories/snapshots") {
+                    authentication(userName: "admin", password: "bfHP3Wgq")
+                }
+                pom.version = "1.0.0-SNAPSHOT"
+                pom.artifactId = "perc-spring-social-facebook"
+                pom.groupId = "com.percussion"
+            }
+        }
+    }
 }
 
 project('spring-social-facebook-web') {
@@ -274,7 +322,30 @@ configure(rootProject) {
         archives dist
         archives project(':docs').docsZip
         archives project(':docs').schemaZip
-    }    
+    }
+
+    repositories {
+        maven {
+            url "http://repo-man.stage.crescendocontent.services:8081/nexus/content/groups/public"
+        }
+    }
+
+    group = 'com.percussion'
+    archivesBaseName = 'perc-spring-social-facebook'
+    version = '1.0.0-SNAPSHOT'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: "http://repo-man.stage.crescendocontent.services:8081/nexus/content/repositories/snapshots") {
+                    authentication(userName: "admin", password: "")
+                }
+                pom.version = "1.0.0-SNAPSHOT"
+                pom.artifactId = "perc-spring-social-facebook"
+                pom.groupId = "com.percussion"
+            }
+        }
+    }
 
     task wrapper(type: Wrapper) {
         description = 'Generates gradlew[.bat] scripts'
