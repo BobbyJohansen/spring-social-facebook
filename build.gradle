@@ -102,7 +102,7 @@ configure(subprojects - docProjects) { subproject ->
         repositories {
             mavenDeployer {
                 repository(url: "http://repo-man.stage.crescendocontent.services:8081/nexus/content/repositories/snapshots") {
-                    authentication(userName: "admin", password: "bfHP3Wgq")
+                    authentication(userName: "admin", password: "")
                 }
                 pom.version = "1.0.0-SNAPSHOT"
                 pom.artifactId = "perc-spring-social-facebook"
@@ -233,7 +233,7 @@ project('spring-social-facebook') {
         repositories {
             mavenDeployer {
                 repository(url: "http://repo-man.stage.crescendocontent.services:8081/nexus/content/repositories/snapshots") {
-                    authentication(userName: "admin", password: "bfHP3Wgq")
+                    authentication(userName: "admin", password: "")
                 }
                 pom.version = "1.0.0-SNAPSHOT"
                 pom.artifactId = "perc-spring-social-facebook"
